@@ -64,6 +64,10 @@ const hasStatusAndPriorityProperty = (requestQuery) => {
     requestQuery.status !== undefined && requestQuery.priority !== undefined
   );
 };
+
+const mainDueDate = new Date(dueDate);
+        const formattedDate = format(mainDueDate);
+
 const hasDueDateAndPriorityProperty = (requestQuery) => {
   return (
     requestQuery.dueDate !== undefined && requestQuery.priority !== undefined
@@ -96,8 +100,6 @@ app.get("/todos/", async (request, response) => {
           status = '${status}';`;
         break;
       case hasDueDateProperty(request.query):
-        const mainDueDate = new Date(dueDate);
-        const formattedDate = format(mainDueDate);
         getTodosQuery = `
          SELECT * FROM todo
           WHERE todo LIKE '%${search_q}%' AND
@@ -110,8 +112,6 @@ app.get("/todos/", async (request, response) => {
           priority = '${priority}';`;
         break;
       case hasCategoryAndDueDateProperty(request.query):
-        const mainDueDate = new Date(dueDate);
-        const formattedDate = format(mainDueDate);
         getTodosQuery = `
            SELECT * FROM todo
            WHERE todo LIKE '%${search_q}%' AND
@@ -142,8 +142,6 @@ app.get("/todos/", async (request, response) => {
            priority = '${priority}' AND status = '${status}';`;
         break;
       case hasDueDateAndPriorityProperty(request.query):
-        const mainDueDate = new Date(dueDate);
-        const formattedDate = format(mainDueDate);
         getTodosQuery = `
            SELECT * FROM todo
            WHERE todo LIKE  '%${search_q}%' AND
