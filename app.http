@@ -45,6 +45,7 @@ Content-Type:application/json
 
 ###
 GET http://localhost:3000/todos/agenda/?date=2021-02-22
+Content-Type:application/json
 
 
 
@@ -96,7 +97,7 @@ Content-Type:application/json
 
 
 ###
-PUT http://localhost:3000/todos/8/
+PUT http://localhost:3000/todos/3/
 Content-Type:application/json
 
 {

@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
+const { format } = require("date-fns");
 
 const databasePath = path.join(__dirname, "todoApplication.db");
 const app = express();
@@ -65,8 +66,7 @@ const hasStatusAndPriorityProperty = (requestQuery) => {
   );
 };
 
-const mainDueDate = new Date(dueDate);
-        const formattedDate = format(mainDueDate);
+const dueDate = format(new Date(2021, 02, 22), "yyyy-MM-dd");
 
 const hasDueDateAndPriorityProperty = (requestQuery) => {
   return (
@@ -103,7 +103,7 @@ app.get("/todos/", async (request, response) => {
         getTodosQuery = `
          SELECT * FROM todo
           WHERE todo LIKE '%${search_q}%' AND
-          due_date = '${formattedDate}'; `;
+          due_date = '${dueDate}'; `;
         break;
       case hasPriorityProperty(request.query):
         getTodosQuery = `
@@ -115,7 +115,7 @@ app.get("/todos/", async (request, response) => {
         getTodosQuery = `
            SELECT * FROM todo
            WHERE todo LIKE '%${search_q}%' AND
-           category = '${category}' AND due_date = ${formattedDate}';`;
+           category = '${category}' AND due_date = ${dueDate}';`;
         break;
       case hasCategoryAndPriorityProperty(request.query):
         getTodosQuery = `
@@ -145,7 +145,7 @@ app.get("/todos/", async (request, response) => {
         getTodosQuery = `
            SELECT * FROM todo
            WHERE todo LIKE  '%${search_q}%' AND
-           due_date = '${formattedDate}' AND priority = '${priority}';`;
+           due_date = '${dueDate}' AND priority = '${priority}';`;
         break;
       default:
         getTodosQuery = `
@@ -181,8 +181,6 @@ app.get("/todos/:todoId/", async (request, response) => {
 
 app.get("/agenda/", async (request, response) => {
   const { dueDate } = request.params;
-  const mainDueDate = new Date(dueDate);
-  const formattedDate = format(mainDueDate);
   const getWithDateQuery = `
     SELECT * FROM todo
     WHERE due_date = '${dueDate}';`;
